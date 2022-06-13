@@ -1,10 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
-	"encoding/json"
 	"io/fs"
 	"io/ioutil"
 	"os"
@@ -67,7 +67,7 @@ func Perform(args Arguments, writer io.Writer) error {
 	_, errf := os.Open(fileName)
 	if errf != nil {
 		return fmt.Errorf("!")
-	}	
+	}
 
 	return nil
 }
@@ -90,7 +90,7 @@ func add(fileName string, strItem string, writer io.Writer) error {
 	}
 
 	var filePermission fs.FileMode = 0644
-	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, filePermission)
+	file, err := os.OpenFile(fileName, os.O_RDWR, filePermission)
 
 	if err != nil {
 		return err
@@ -103,14 +103,16 @@ func add(fileName string, strItem string, writer io.Writer) error {
 
 	var items []Item
 	err = json.Unmarshal(bytes, &items)
-
-	for _, i := range items {
-		if fmt.Sprint(item) == i.Id {
-			return fmt.Errorf("Item with id %s already exists", i.Id)
-		}
-	}
 	if err != nil {
 		return err
+	}
+	for _, i := range items {
+		fmt.Println(i.Id)
+		if fmt.Sprint(item) == i.Id {
+			writer.Write([]byte("Item with id 1 already exists"))
+			file.Close()
+			return nil
+		}
 	}
 
 	items = append(items, item)
@@ -137,7 +139,7 @@ func list(fileName string, writer io.Writer) error {
 	}
 
 	bytes, err := ioutil.ReadAll(file)
-	defer file.Close()
+
 	if err != nil {
 		return err
 	}

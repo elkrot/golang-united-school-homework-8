@@ -144,8 +144,14 @@ func TestAddingOperationMissingItem(t *testing.T) {
 func TestAddingOperationSameID(t *testing.T) {
 	var buffer bytes.Buffer
 
+	err := os.Remove(fileName)
+	if err != nil {
+		t.Error(err)
+
+		return
+	}
+
 	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, filePermission)
-	defer os.Remove(fileName)
 
 	if err != nil {
 		t.Error(err)
