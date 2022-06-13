@@ -119,12 +119,14 @@ func add(fileName string, strItem string, writer io.Writer) error {
 	items = append(items, item)
 	bt, err := json.Marshal(items)
 	if err != nil {
+		fmt.Println(items)
 		return err
 	}
-	writer.Write(bt)
 
 	file.Write([]byte(bt))
 	file.Close()
+
+	writer.Write(bt)
 
 	return nil
 }
