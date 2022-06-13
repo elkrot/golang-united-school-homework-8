@@ -3,7 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	
+	"io"
+	"os"
 )
 
 type Arguments map[string]string
