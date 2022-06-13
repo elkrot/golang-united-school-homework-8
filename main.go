@@ -90,7 +90,7 @@ func add(fileName string, strItem string, writer io.Writer) error {
 	}
 
 	var filePermission fs.FileMode = 0644
-	file, err := os.OpenFile(fileName, os.O_RDWR, filePermission)
+	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, filePermission)
 
 	if err != nil {
 		return err
@@ -109,7 +109,7 @@ func add(fileName string, strItem string, writer io.Writer) error {
 	for _, i := range items {
 
 		if fmt.Sprint(item.Id) == i.Id {
-			fmt.Println(i.Id)
+
 			writer.Write([]byte("Item with id 1 already exists"))
 			file.Close()
 			return nil
@@ -121,11 +121,10 @@ func add(fileName string, strItem string, writer io.Writer) error {
 	if err != nil {
 		return err
 	}
+	writer.Write(bt)
 
 	file.Write([]byte(bt))
 	file.Close()
-
-	writer.Write(bt)
 
 	return nil
 }
