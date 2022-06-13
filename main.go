@@ -107,8 +107,9 @@ func add(fileName string, strItem string, writer io.Writer) error {
 		return err
 	}
 	for _, i := range items {
-		fmt.Println(i.Id)
-		if fmt.Sprint(item) == i.Id {
+
+		if fmt.Sprint(item.Id) == i.Id {
+			fmt.Println(i.Id)
 			writer.Write([]byte("Item with id 1 already exists"))
 			file.Close()
 			return nil
